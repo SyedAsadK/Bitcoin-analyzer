@@ -1,0 +1,67 @@
+<div id="chart-wrapper" class="w-full h-[500px]">
+  <div id="btc-chart" class="w-full h-full"></div>
+</div>
+
+<script>
+  var chartDom = document.getElementById("btc-chart");
+  var myChart = echarts.init(chartDom, "dark", {
+      background: "transparent",
+  });
+
+  var option = {
+      tooltip: {
+          trigger: "axis",
+          backgroundColor: "#1f2937",
+          borderColor: "#374151",
+          textStyle: { color: "#fff" },
+      },
+      legend: {
+          data: ["Actual BTC", "Predicted BTC"],
+          textStyle: { color: "#9ca3af" },
+      },
+      grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+      },
+      xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: [(${timestamps})],
+          splitLine: { show: false },
+      },
+      yAxis: {
+          type: "value",
+          min: "dataMin",
+          splitLine: {
+              lineStyle: { color: "#374151", type: "dashed" },
+          },
+      },
+      series: [
+          {
+              name: "Actual BTC",
+              type: "line",
+              smooth: true,
+              lineStyle: { color: "#00b894", width: 3 },
+              areaStyle: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                      { offset: 0, color: "rgba(0, 184, 148, 0.5)" },
+                      { offset: 1, color: "rgba(0, 184, 148, 0)" },
+                  ]),
+              },
+              data: [(${actualPrices})],
+          },
+          {
+              name: "Predicted BTC",
+              type: "line",
+              smooth: true,
+              lineStyle: { color: "#a29bfe", width: 3 },
+              data: [(${predictedPrices})],
+          },
+      ],
+  };
+
+  myChart.setOption(option);
+  window.addEventListener("resize", () => myChart.resize());
+</script>

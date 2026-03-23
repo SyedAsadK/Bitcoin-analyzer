@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" data-theme="dim">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BTC Predictor Engine</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  </head>
+
+  <body class="min-h-screen bg-base-200 text-base-content p-8">
+    <div class="navbar bg-base-100 rounded-box shadow-lg mb-8">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-xl font-bold tracking-widest text-primary"
+          >BTC // PREDICT</a
+        >
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div class="card bg-base-100 shadow-xl col-span-1">
+        <div class="card-body">
+          <h2 class="card-title text-sm uppercase text-gray-400">
+            Model Engine
+          </h2>
+
+          <select
+            name="model"
+            class="select select-bordered select-primary w-full mt-2"
+            hx-get="/api/chart"
+            hx-target="#chart-wrapper"
+            hx-trigger="change"
+          >
+            <option value="lstm" selected>LSTM Neural Net</option>
+            <option value="xgboost">XGBoost</option>
+            <option value="transformer">Transformer</option>
+          </select>
+
+          <div class="divider"></div>
+
+          <div class="stat p-0">
+            <div class="stat-title">Current BTC</div>
+            <div class="stat-value text-accent">$64,230</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card bg-base-100 shadow-xl col-span-1 lg:col-span-3">
+        <div class="card-body">
+          <div id="chart-wrapper" class="w-full h-[500px]">
+            <div id="btc-chart" class="w-full h-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <script>
+    var chartDom = document.getElementById("btc-chart");
+    var myChart = echarts.init(chartDom, "dark", {
+    background: "transparent",
+    });
+
+    // Define the option globally/initially
+    var option = {
+    tooltip: {
+    trigger: "axis",
+    backgroundColor: "#1f2937",
+    borderColor: "#374151",
+    textStyle: { color: "#fff" },
+    },
+    legend: {
+    data: ["Actual BTC", "Predicted BTC"],
+    textStyle: { color: "#9ca3af" },
+    },
+    grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
+    xAxis: {
+    type: "category",
+    boundaryGap: false,
+    data: ["10:00", "10:05", "10:10", "10:15", "10:20", "10:25", "10:30"],
+    splitLine: { show: false },
+    },
+    yAxis: {
+    type: "value",
+    min: "dataMin",
+    splitLine: { lineStyle: { color: "#374151", type: "dashed" } },
+    },
+    series: [
+    {
+    name: "Actual BTC",
+    type: "line",
+    smooth: true,
+    lineStyle: { color: "#00b894", width: 3 },
+    areaStyle: {
+    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+    { offset: 0, color: "rgba(0, 184, 148, 0.5)" },
+    { offset: 1, color: "rgba(0, 184, 148, 0)" },
+    ]),
+    },
+    data: [64100, 64150, 64120, 64200, 64250, 64230, 64280],
+    },
+    {
+    name: "Predicted BTC",
+    type: "line",
+    smooth: true,
+    lineStyle: { color: "#a29bfe", width: 3 },
+    data: [64110, 64160, 64110, 64210, 64240, 64250, 64300],
+    },
+    ],
+    };
+
+    // Draw the chart immediately
+    myChart.setOption(option);
+
+    // Only resize when the window changes
+    window.addEventListener("resize", function () {
+    myChart.resize();
+    });
+    </script>  </body>
+</html>
