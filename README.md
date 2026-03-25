@@ -39,7 +39,7 @@ This repository is split into three main components to ensure a clean separation
 
 ### Backend
 
-- **Spring Boot 3.x** - REST API framework
+- **Spring Boot** - REST API framework
 - **Maven** - Dependency management
 
 ### Frontend
