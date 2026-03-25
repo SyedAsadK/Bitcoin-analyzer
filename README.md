@@ -1,6 +1,6 @@
 # Bitcoin Analyzer 📈
 
-Bitcoin Analyzer is a full-stack data analytics and machine learning application designed to analyze Bitcoin market trends, predict price movements, and visualize cryptocurrency data.
+Bitcoin Analyzer is a full-stack data analytics and machine learning application designed to analyze Bitcoin market trends, serving primarily as an experimental sandbox. Rather than claiming to definitively predict price movements, this project explores the limitations of forecasting cryptocurrency markets. Due to extreme volatility, sudden macroeconomic shifts, regulatory news, and whale movements, crypto assets often behave unpredictably, demonstrating why past performance and historical data are inherently unreliable indicators of future results.
 
 ![Screenshot of the Application](ss.png)
 ![models](ss2.png)
