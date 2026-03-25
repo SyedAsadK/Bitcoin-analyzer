@@ -68,11 +68,10 @@ export default function BTCDashboard() {
             <button
               key={m}
               onClick={() => setModel(m)}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
-                model === m
+              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${model === m
                   ? "bg-emerald-500 text-white shadow-lg"
                   : "text-slate-400 hover:text-white"
-              }`}
+                }`}
             >
               {m}
             </button>
@@ -110,7 +109,7 @@ export default function BTCDashboard() {
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-emerald-400"></div>
               </div>
             ) : (
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" minHeight={300} aspect={2}>
                 <AreaChart data={data}>
                   <defs>
                     <linearGradient
