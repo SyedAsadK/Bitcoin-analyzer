@@ -2,24 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Area,
-  AreaChart,
 } from "recharts";
-import { TrendingUp, Cpu, Activity } from "lucide-react";
+import { TrendingUp, Activity } from "lucide-react";
 
 export default function BTCDashboard() {
   const [model, setModel] = useState("LSTM");
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch data from your FastAPI backend
   const fetchData = async (selectedModel: string) => {
     setLoading(true);
     try {
@@ -33,17 +30,22 @@ export default function BTCDashboard() {
 
       const json = await response.json();
 
-      // Check if timestamps exists before mapping
       if (json && json.timestamps) {
         const formattedData = json.timestamps.map((t: string, i: number) => ({
           name: t,
           actual: json.actual_prices[i],
           predicted: json.predicted_prices[i],
         }));
-        setData(formattedData);
+
+        const filteredData = formattedData.filter(
+          (item) => item.actual !== null || item.predicted !== null
+        );
+
+        setData(filteredData);
       }
     } catch (error) {
       console.error("The UI survived, but the data is gone:", error);
+      setData(null);
     } finally {
       setLoading(false);
     }
@@ -68,10 +70,11 @@ export default function BTCDashboard() {
             <button
               key={m}
               onClick={() => setModel(m)}
-              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${model === m
+              className={`px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
+                model === m
                   ? "bg-emerald-500 text-white shadow-lg"
                   : "text-slate-400 hover:text-white"
-                }`}
+              }`}
             >
               {m}
             </button>
@@ -103,78 +106,85 @@ export default function BTCDashboard() {
 
         {/* Main Chart Card */}
         <div className="lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
-          <div className="h-[500px] w-full">
-            {loading ? (
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-emerald-400"></div>
-              </div>
-            ) : (
-              <ResponsiveContainer width="100%" minHeight={300} aspect={2}>
-                <AreaChart data={data}>
-                  <defs>
-                    <linearGradient
-                      id="colorActual"
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorPred" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    stroke="#1e293b"
-                    vertical={false}
-                  />
-                  <XAxis
-                    dataKey="name"
-                    stroke="#64748b"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis
-                    stroke="#64748b"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    domain={["auto", "auto"]}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#0f172a",
-                      border: "1px solid #1e293b",
-                      borderRadius: "8px",
-                    }}
-                    itemStyle={{ fontSize: "12px", fontWeight: "bold" }}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="actual"
-                    stroke="#10b981"
-                    strokeWidth={3}
-                    fillOpacity={1}
-                    fill="url(#colorActual)"
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="predicted"
-                    stroke="#8b5cf6"
-                    strokeWidth={3}
-                    strokeDasharray="5 5"
-                    fillOpacity={1}
-                    fill="url(#colorPred)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-          </div>
+          {loading ? (
+            <div className="h-[500px] w-full flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-emerald-400"></div>
+            </div>
+          ) : data && data.length > 0 ? (
+            <ResponsiveContainer width="100%" height={500}>
+              <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient
+                    id="colorActual"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="colorPred" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="#1e293b"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="name"
+                  stroke="#64748b"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  stroke="#64748b"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  domain={["auto", "auto"]}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#0f172a",
+                    border: "1px solid #1e293b",
+                    borderRadius: "8px",
+                  }}
+                  itemStyle={{ fontSize: "12px", fontWeight: "bold" }}
+                  formatter={(value) => 
+                    value !== null ? `$${value.toFixed(2)}` : "N/A"
+                  }
+                />
+                <Area
+                  type="monotone"
+                  dataKey="actual"
+                  stroke="#10b981"
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#colorActual)"
+                  isAnimationActive={false}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="predicted"
+                  stroke="#8b5cf6"
+                  strokeWidth={3}
+                  strokeDasharray="5 5"
+                  fillOpacity={1}
+                  fill="url(#colorPred)"
+                  isAnimationActive={false}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="h-[500px] w-full flex items-center justify-center">
+              <p className="text-slate-400">No data available</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
