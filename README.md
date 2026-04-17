@@ -5,15 +5,15 @@ Bitcoin Analyzer is a full-stack data analytics and machine learning application
 ![Screenshot of the Application](ss.png)
 ![models](ss2.png)
 
-## 🏗️ Project Structure
+## Project Structure
 
 This repository is split into three main components to ensure a clean separation of concerns:
 
-- **`/ml-engine`** (FastAPI, Jupyter Notebook) 🧠
+- **`/ml-engine`** (FastAPI, Jupyter Notebook) 
   Contains the core machine learning models, data exploration, and feature engineering scripts used to analyze Bitcoin historical data and predict trends.
-- **`/backend-engine`** (Go, Gin Framework) ⚙️
+- **`/backend-engine`** (Go, Gin Framework) 
   The backend API layer responsible for orchestrating the ML engine, handling HTTP requests, and exposing prediction results to the web client with low-latency performance.
-- **`/frontend`** (Next.js) 💻
+- **`/frontend`** (Next.js) 
   The user-facing web application that visualizes the Bitcoin data, charts, and predictive analysis through an interactive dashboard.
 
 ## 🚀 Features
