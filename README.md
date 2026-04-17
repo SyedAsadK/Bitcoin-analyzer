@@ -4,17 +4,16 @@ Bitcoin Analyzer is a full-stack data analytics and machine learning application
 
 ![Screenshot of the Application](ss.png)
 ![models](ss2.png)
-![workflow](ss3.png)
 
 ## 🏗️ Project Structure
 
 This repository is split into three main components to ensure a clean separation of concerns:
 
-- **`/ml-engine`** (FastAPI,Jupyter Notebook) 🧠
+- **`/ml-engine`** (FastAPI, Jupyter Notebook) 🧠
   Contains the core machine learning models, data exploration, and feature engineering scripts used to analyze Bitcoin historical data and predict trends.
-- **`/backend-engine`** (Springboot(Java)) ⚙️
-  The backend API layer responsible for serving data, interacting with databases, handling business logic, and exposing the machine learning model results to the web client.
-- **`/frontend`** (Nextjs) 💻
+- **`/backend-engine`** (Go, Gin Framework) ⚙️
+  The backend API layer responsible for orchestrating the ML engine, handling HTTP requests, and exposing prediction results to the web client with low-latency performance.
+- **`/frontend`** (Next.js) 💻
   The user-facing web application that visualizes the Bitcoin data, charts, and predictive analysis through an interactive dashboard.
 
 ## 🚀 Features
@@ -23,9 +22,9 @@ This repository is split into three main components to ensure a clean separation
 - **Advanced Feature Engineering**: 15+ technical indicators derived from price/volume
 - **Deep Learning Models**: LSTM (GRU variants) and Transformer-based architectures
 - **Ensemble Predictions**: Combines multiple models for robust forecasting
-- **Low-Latency API**: Sub-100ms inference via Spring Boot REST endpoints
+- **Low-Latency API**: Sub-100ms inference via Go REST endpoints with efficient goroutine handling
 - **Model Versioning**: Automatic tracking of model performance and weights
-- **Interactive Dashboard**: Real-time predictions and backtesting visualization
+- **Interactive Dashboard**: Real-time predictions and visualization
 
 ## 🛠️ Tech Stack
 
@@ -35,14 +34,28 @@ This repository is split into three main components to ensure a clean separation
 - **TensorFlow/Keras** - Deep learning models
 - **Pandas/NumPy** - Data processing
 - **Scikit-learn** - Feature scaling, evaluation metrics
+- **FastAPI** - High-performance Python API server
 - **Jupyter Notebook** - Experimentation & analysis
 
 ### Backend
 
-- **Spring Boot** - REST API framework
-- **Maven** - Dependency management
+- **Go 1.21+** - High-performance language
+- **Gin Framework** - Lightweight HTTP web framework
+- **CORS Support** - Cross-origin resource sharing for frontend communication
 
 ### Frontend
 
-- **NextJS** - UI framework
-- **Tailwind** - CSS
+- **Next.js 14+** - React framework
+- **Tailwind CSS** - Utility-first styling
+- **Recharts** - Interactive charting library
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Go 1.21 or higher
+- Python 3.10+
+- Node.js 18+
+- pip (Python package manager)
+- npm or yarn (Node package manager)
+
